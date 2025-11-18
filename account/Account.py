@@ -3,6 +3,9 @@ from core import Branch
 from client import Client
 from abc import ABC, abstractmethod
 from interfaces.Authenticate import Authenticate
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..transaction import Transaction
 
 
 class Account(ABC, Authenticate):
@@ -12,7 +15,7 @@ class Account(ABC, Authenticate):
         self.branch = branch
         self.balance = balance
         self.password = password
-        self.transactions: List = []
+        self.transactions: List['Transaction'] = []
 
     def auntheticate(self, password: str) -> bool:
         return self._password == password
