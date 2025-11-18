@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from interfaces.Authenticate import Authenticate
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from ..transaction import Transaction
+    from .Transactions import Transaction
 
 
 class Account(ABC, Authenticate):
