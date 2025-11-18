@@ -17,3 +17,8 @@ class Branch:
     def branch_id(self) -> str:
         return self._branch_id
   
+    def add_account(self, account: 'Account'):
+        self._accounts.append(account)
+
+    def show_accounts(self) -> List['Account']:
+        return self._accounts
