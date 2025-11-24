@@ -4,10 +4,10 @@ if TYPE_CHECKING:
     from ..account import Account
 
 class CompanyClient(Client):
-    def __init__(self, name: str, cnpj: str, phone: str, company_id: str):
+    def __init__(self, name: str, cnpj: str, phone: str, company_name: str):
         super().__init__(name, phone)
         self._cnpj = cnpj
-        self._company_id = company_id
+        self._company_name = company_name
 #getters and setters
     @property
     def cnpj(self) -> str:

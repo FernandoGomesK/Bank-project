@@ -12,7 +12,7 @@ class Bank:
         self._address = address  
         self._phone = phone
         self._branches: List['Branch'] = []
-
+    
     def add_branch(self, branch: 'Branch'):
         if not isinstance(branch, Branch):
             raise InvalidBranchInstanceError(type(branch).__name__)
