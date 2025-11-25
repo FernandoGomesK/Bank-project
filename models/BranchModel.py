@@ -6,5 +6,5 @@ class BranchModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     branch_id = Column(String(10), unique=True)
-    address = Column(String(100,))
-    phone = Column(String(15,))
+    address = Column(String(100))
+    phone = Column(String(15))
