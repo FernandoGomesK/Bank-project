@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
 from config.dependencies import get_db
 from models.BranchModel import BranchModel
 from schemas.BranchSchema import BranchCreate, BranchResponse
+
+from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
 
 router = APIRouter(
     prefix="/branches",
@@ -13,6 +15,10 @@ router = APIRouter(
 
 @router.post("/", response_model=BranchResponse)
 def create_branch(branch: BranchCreate, db: Session = Depends(get_db)):
+    branch_exists = db.query(BranchModel).filter(BranchModel.branch_id == branch.branch_id).first()
+    if branch_exists:
+        raise BranchAlreadyExistsException(branch.branch_id)
+    
     db_branch = BranchModel(
         branch_id=branch.branch_id, 
         address=branch.address, 
