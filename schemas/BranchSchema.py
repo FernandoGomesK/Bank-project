@@ -2,13 +2,13 @@ from pydantic import BaseModel
 
 class BranchCreate(BaseModel):
     branch_id: str
-    adress: str
+    address: str
     phone: str
 
 class BranchResponse(BaseModel):
     id: int
-    Branch_id: str
-    adress: str
+    branch_id: str
+    address: str
 
     class Config:
         from_attributes = True
