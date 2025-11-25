@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class BranchCreate(BaseModel):
-    branch__id: str
+    branch_id: str
     adress: str
     phone: str
 
