@@ -2,7 +2,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from config.database import engine, Base
-from routes import branch_routes
+from routes import client_routes
 
 from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
 from utils.exceptions.error_handlers import branch_exists_handler
@@ -15,9 +15,10 @@ app = FastAPI()
 app.add_exception_handler(BranchAlreadyExistsException, branch_exists_handler)
 
 
+
 @app.get("/")
 def read_root():
     return {"mensagem": "O Banco Beto está ON! Acesse /docs para usar."}
 
 # 2. Inclui as rotas do branch_routes
-app.include_router(branch_routes.router)
+app.include_router(client_routes.router)
