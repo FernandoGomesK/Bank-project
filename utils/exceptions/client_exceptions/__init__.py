@@ -1,4 +1,4 @@
-from ClientAlreadyExistsException import ClientAlreadyExistsException
+from .ClientAlreadyExistsException import ClientAlreadyExistsException
 from .ClientDoesntHaveCNPJException import ClientDoesntHaveCNPJException
 from .ClientDoesntHaveCPFException import ClientDoesntHaveCPFException
 from .ClientBranchDoesntExistException import BranchDoesntExistException

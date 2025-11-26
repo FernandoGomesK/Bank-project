@@ -33,7 +33,7 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     if client.client_type == "PJ" and not client.cnpj:
         raise ClientDoesntHaveCNPJException("cadastro de pessoa jurídica requer CNPJ.")
     
-    branch = db.query(BranchModel).filter(BranchModel.branch_id == client.branch_id).first()
+    branch = db.query(BranchModel).filter(BranchModel.id == client.branch_id).first()
     if not branch:
         raise BranchDoesntExistException(client.branch_id)
     
