@@ -6,6 +6,8 @@ from routes import client_routes
 
 from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
 from utils.exceptions.error_handlers import branch_exists_handler
+from utils.exceptions.ClientExceptions import ClientAlreadyExistsException, ClientDoesntHaveCNPJException
+from utils.exceptions.error_handlers import client_exists_handler, client_missing_cnpj_handler
 
 # 1. Cria as tabelas no banco de dados automaticamente
 Base.metadata.create_all(bind=engine)
@@ -13,7 +15,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 app.add_exception_handler(BranchAlreadyExistsException, branch_exists_handler)
-
+app.add_exception_handler(ClientAlreadyExistsException, client_exists_handler)
+app.add_exception_handler(ClientDoesntHaveCNPJException, client_missing_cnpj_handler)
 
 
 @app.get("/")

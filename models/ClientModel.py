@@ -11,5 +11,4 @@ class ClientModel(Base):
     birth_date = Column(String(10), nullable=True)
     cnpj = Column(String(14), unique=True, nullable=True)
     company_name = Column(String(100), nullable=True)
-    accounts = Column(String(15))
     branch_id = Column(Integer, ForeignKey("branches.id"))

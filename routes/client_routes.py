@@ -15,16 +15,24 @@ router = APIRouter(
 
 @router.post("/", response_model=ClientResponse)
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
-    client_exists = db.query(ClientModel).filter(ClientModel.client_id == client.client_id).first()
+    
+    if client.client_type == "PF" and client.cpf:
+        client_exists = db.query(ClientModel).filter(ClientModel.cpf == client.cpf).first()
+        if client_exists:
+            raise ClientAlreadyExistsException(client.client_id)
+        
+    if client.client_type == "PJ" and client.cnpj:
+        client_exists = db.query(ClientModel).filter(ClientModel.cnpj == client.cnpj).first()
+        if client_exists:
+            raise ClientAlreadyExistsException(client.client_id)
+          
     if client_exists:
         raise ClientAlreadyExistsException(client.client_id)
-    if client.client_type == "PF" and not client.cpf:
-        raise ClientDoesntHaveCPFException(client.client_id)
+    
     if client.client_type == "PJ" and not client.cnpj:
         raise ClientDoesntHaveCNPJException(client.client_id)
     
-    db_client = ClientModel(
-        client_id = client.client_id,
+    db_client = ClientModel(   
         name = client.name,
         client_type = client.client_type,
         cpf = client.cpf,
