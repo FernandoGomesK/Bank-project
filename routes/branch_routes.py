@@ -20,7 +20,6 @@ def create_branch(branch: BranchCreate, db: Session = Depends(get_db)):
         raise BranchAlreadyExistsException(branch.branch_id)
     
     db_branch = BranchModel(
-        branch_id=branch.branch_id, 
         address=branch.address, 
         phone=branch.phone
     )
