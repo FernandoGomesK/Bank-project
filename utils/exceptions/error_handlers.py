@@ -1,7 +1,7 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
-from utils.exceptions.ClientExceptions import ClientAlreadyExistsException, ClientDoesntHaveCNPJException, ClientDoesntHaveCPFException
+from utils.exceptions.client_exceptions import ClientAlreadyExistsException, ClientDoesntHaveCNPJException, ClientDoesntHaveCPFException
 
 async def branch_exists_handler(request: Request, exc: BranchAlreadyExistsException):
     return JSONResponse(

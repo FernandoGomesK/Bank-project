@@ -6,7 +6,7 @@ from config.dependencies import get_db
 from models.ClientModel import ClientModel
 from schemas.ClientSchema import ClientCreate, ClientResponse
 
-from utils.exceptions.ClientExceptions import ClientAlreadyExistsException, ClientDoesntHaveCNPJException, ClientDoesntHaveCPFException
+from utils.exceptions.client_exceptions import ClientAlreadyExistsException, ClientDoesntHaveCNPJException, ClientDoesntHaveCPFException
 
 router = APIRouter(
     prefix="/clients",
@@ -26,8 +26,8 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
         if client_exists:
             raise ClientAlreadyExistsException(client.client_id)
           
-    if client_exists:
-        raise ClientAlreadyExistsException(client.client_id)
+    if client.clint_type == "PF" and not client.cpf:
+        raise ClientDoesntHaveCPFException(client.client_id)
     
     if client.client_type == "PJ" and not client.cnpj:
         raise ClientDoesntHaveCNPJException(client.client_id)
