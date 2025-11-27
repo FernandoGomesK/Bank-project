@@ -10,6 +10,7 @@ class ClientCreate(BaseModel):
     birth_date: Optional[str] = None
     cnpj: Optional[str] = None
     company_name: Optional[str] = None
+    password: str
     
 class ClientResponse(BaseModel):
     client_id: int

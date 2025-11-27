@@ -12,3 +12,4 @@ class ClientModel(Base):
     cnpj = Column(String(14), unique=True, nullable=True)
     company_name = Column(String(100), nullable=True)
     branch_id = Column(Integer, ForeignKey("branches.id"))
+    password_hash = Column(String(255))      

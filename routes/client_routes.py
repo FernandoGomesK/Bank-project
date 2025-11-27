@@ -45,6 +45,7 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
         cnpj = client.cnpj,
         company_name =  client.company_name,
         branch_id = client.branch_id
+        
     )
     db.add(db_client)
     db.commit()
