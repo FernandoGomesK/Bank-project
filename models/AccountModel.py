@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from config.database import Base
 
 class AccountModel(Base):
@@ -7,4 +7,5 @@ class AccountModel(Base):
     account_id = Column(Integer, primary_key=True, index=True)
     client_id = Column(Integer, ForeignKey("clients.client_id"))
     branch_id = Column(Integer, ForeignKey("branches.id"))
-    balance = Column(Integer, default=0)
+    balance = Column(Float, default=0.0)
+    account_type = Column(String(20))
