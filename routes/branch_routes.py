@@ -15,10 +15,6 @@ router = APIRouter(
 
 @router.post("/", response_model=BranchResponse)
 def create_branch(branch: BranchCreate, db: Session = Depends(get_db)):
-    branch_exists = db.query(BranchModel).filter(BranchModel.branch_id == branch.branch_id).first()
-    if branch_exists:
-        raise BranchAlreadyExistsException(branch.branch_id)
-    
     db_branch = BranchModel(
         address=branch.address, 
         phone=branch.phone

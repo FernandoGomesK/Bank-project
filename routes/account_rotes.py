@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from config.dependencies import get_db
 
 from models.AccountModel import AccountModel
-from shcemas.AccountSchema import AccountCreate, AccountResponse
+from schemas.AccountSchema import AccountCreate, AccountResponse
 
 router = APIRouter(
     prefix="/accounts",

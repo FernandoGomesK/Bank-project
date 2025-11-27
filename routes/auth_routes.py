@@ -21,7 +21,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         (ClientModel.cpf == request.identifier) | (ClientModel.cnpj == request.identifier)
     ).first()
     
-    if not client or not verify_password(request.password, client.hashed_password):
+    if not client or not verify_password(request.password, client.password_hash):
         raise InvalidCredentialsException()
     
     return {"message": "Login successful", "client_id": client.client_id}

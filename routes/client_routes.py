@@ -7,6 +7,8 @@ from models.ClientModel import ClientModel
 from models.BranchModel import BranchModel
 from schemas.ClientSchema import ClientCreate, ClientResponse
 
+from utils.security import get_password_hash
+
 from utils.exceptions.client_exceptions import ClientAlreadyExistsException, ClientDoesntHaveCNPJException, ClientDoesntHaveCPFException, BranchDoesntExistException
 
 router = APIRouter(
@@ -37,6 +39,9 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     if not branch:
         raise BranchDoesntExistException(client.branch_id)
     
+    hashed_pwd = get_password_hash(client.password)
+    
+    
     db_client = ClientModel(   
         name = client.name,
         client_type = client.client_type,
@@ -44,9 +49,10 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
         birth_date = client.birth_date,
         cnpj = client.cnpj,
         company_name =  client.company_name,
-        branch_id = client.branch_id
-        
+        branch_id = client.branch_id,
+        password_hash = hashed_pwd   
     )
+    
     db.add(db_client)
     db.commit()
     db.refresh(db_client)
