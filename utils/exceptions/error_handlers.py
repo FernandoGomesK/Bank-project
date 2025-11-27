@@ -4,7 +4,7 @@ from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
 from utils.exceptions.client_exceptions import (ClientAlreadyExistsException, ClientDoesntHaveCNPJException, 
                                                 ClientDoesntHaveCPFException, BranchDoesntExistException)
 from utils.exceptions.auth_exceptions.InvalidCredentialsException import InvalidCredentialsException
-
+from utils.exceptions.Account_exceptions import ClientDoesntExistException, ClientAlreadyHasAccountException
 async def branch_exists_handler(request: Request, exc: BranchAlreadyExistsException):
     return JSONResponse(
         status_code=400,
@@ -57,4 +57,24 @@ async def invalid_credentials_handler(request: Request, exc: InvalidCredentialsE
         content={
             "erro": "Credenciais Inválidas",
             "mensagem": exc.message},
+    )
+    
+    
+async def client_doesnt_exist_handler(request: Request, exc: ClientDoesntExistException):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "erro": "Recurso Não Encontrado",
+            "mensagem": exc.message,
+            "id_tentado": exc.client_id},
+    )
+    
+    
+async def client_already_has_account_handler(request: Request, exc: ClientAlreadyHasAccountException):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "erro": "Erro de Validação",
+            "mensagem": exc.message,
+            "id_tentado": exc.client_id},
     )
