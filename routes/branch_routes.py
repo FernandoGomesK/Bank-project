@@ -6,8 +6,6 @@ from config.dependencies import get_db
 from models.BranchModel import BranchModel
 from schemas.BranchSchema import BranchCreate, BranchResponse
 
-from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
-
 router = APIRouter(
     prefix="/branches",
     tags=["branches"],

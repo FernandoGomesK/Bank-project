@@ -2,8 +2,6 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from config.dependencies import get_db
-
-from config.dependencies import get_db
 from models.AccountModel import AccountModel
 from models.ClientModel import ClientModel
 from schemas.AccountSchema import AccountCreate
@@ -17,7 +15,7 @@ router = APIRouter(
 
 @router.post("/")
 def create_account(account: AccountCreate, db: Session = Depends(get_db)):
-    client = db.query(ClientModel).filter((ClientModel.client_id == account.client_id)).first()
+    client = db.query(ClientModel).filter(ClientModel.client_id == account.client_id).first()
     
     if not client:
         raise ClientDoesntExistException(account.client_id)
