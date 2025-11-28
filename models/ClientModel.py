@@ -7,6 +7,7 @@ class ClientModel(Base):
     client_id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100))
     client_type = Column(String(10))
+    phone = Column(String(15))
     cpf = Column(String(11), unique=True, nullable=True)
     birth_date = Column(String(10), nullable=True)
     cnpj = Column(String(14), unique=True, nullable=True)
