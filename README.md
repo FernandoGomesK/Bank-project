@@ -1,53 +1,128 @@
-🏦 Sistema Bancário Orientado a Objetos (POO)
+🏦 Banco Beto API
 
-📜 Descrição do Projeto
+    Versão: 2.0 (FastAPI Migration)
 
-Este projeto foi desenvolvido durante o Terceiro Semestre do curso de Análise e Desenvolvimento de Sistemas. O objetivo é reconstruir e refatorar um projeto de sistema bancário simples feito no semestre anterior, aplicando conceitos avançados de Programação Orientada a Objetos (POO), padrões de design estrutural, e um tratamento robusto de Exceções.
+    Status: Em Desenvolvimento 🚧
 
-O foco principal é na correta modelagem da hierarquia de classes, relacionamentos (Agregação, Composição, Herança) e Injeção de Dependência (DI).
+📖 Sobre o Projeto
 
-🛠️ Estrutura e Tecnologias
+Este projeto é uma evolução arquitetural de um sistema bancário acadêmico desenvolvido originalmente em Python puro (CLI). O objetivo desta nova versão é transformar as regras de negócio de Orientação a Objetos em uma API RESTful moderna, escalável e conectada a um banco de dados real.
 
-O projeto é modelado em UML e implementado em Python, utilizando uma estrutura de pacotes modular.
+O sistema permite o gerenciamento completo de um banco digital, incluindo agências, clientes (Pessoa Física e Jurídica), contas bancárias e autenticação segura.
 
-Estrutura de Pastas
+🚀 Tecnologias Utilizadas
 
-A organização segue o princípio de coesão, agrupando classes por responsabilidade:
+    Linguagem: Python 3.10+
 
-banco_system/ ├── core/ # Classes estruturais (Bank, Branch) ├── client/ # Hierarquia de Clientes (Client, PhysicalClient, CompanyClient) ├── account/ # Hierarquia de Contas (Account, CurrentAccount, SavingsAccount) │ └── interfaces/ # Mixins/Interfaces (Authenticate, Tax, Earning) └── utils/ └── exceptions/ # Todas as classes de Exceção personalizadas
+    Framework Web: FastAPI (Alta performance e validação automática)
 
-Principais Tecnologias
+    Banco de Dados: MySQL 8.0
 
-Linguagem: Python
+    ORM: SQLAlchemy (Mapeamento Objeto-Relacional)
 
-Modelagem: Diagrama de Classes UML
+    Validação de Dados: Pydantic (Schemas e validação de tipos/formatos)
 
-Conceitos: Orientação a Objetos (POO), Herança, Polimorfismo.
+    Segurança: Passlib + Bcrypt (Hashing de senhas)
 
-🏗️ Design e Arquitetura
+    Servidor: Uvicorn (ASGI)
 
-O projeto utiliza uma arquitetura baseada em Herança e Injeção de Dependência para garantir flexibilidade e manutenibilidade.
+✨ Funcionalidades Implementadas
 
-    Hierarquia de Classes
+🏢 Agências (Branches)
 
-Módulo Classes Abstratas (ABC) Subclasses / Implementações Relacionamento Chave Clientes Client PhysicalClient, CompanyClient Herança Contas Account, Authenticate CurrentAccount, SavingsAccount Herança e Mixins (Implementação de Comportamento)
+    Cadastro de novas agências.
 
-    Padrões Aplicados
+    Validação automática de formato de telefone (Regex).
 
-    Herança (Generalização): Usada extensivamente para clientes e contas para herdar atributos e métodos comuns, mas permitir regras específicas (ex: Taxas vs. Rendimentos).
+    Listagem de agências existentes.
 
-    Agregação/Composição: Bank é composto por Branch, e Branch agrega Account e Client.
+👥 Clientes (Clients)
 
-    Injeção de Dependência (DI): As lógicas de Tax e Earning são injetadas nas classes de conta correspondentes, garantindo baixo acoplamento e alta testabilidade.
+    Cadastro de clientes com suporte a Single Table Inheritance (Tabela única para PF e PJ).
 
-    Tratamento de Erros (Exceptions)
+    Validação de regras de negócio:
 
-Foram implementadas classes de exceção personalizadas para lidar de forma clara com falhas específicas do sistema bancário:
+        PF: Exige CPF.
 
-InsufficientFundsError (Saldo insuficiente)
+        PJ: Exige CNPJ.
 
-InvalidAccountError (Conta inexistente)
+    Segurança: As senhas dos clientes são criptografadas (Hash) antes de serem salvas no banco.
 
-AuthenticationFailedError (Falha na autenticação)
+    Associação automática com uma Agência.
 
-👤 Autor FernandoGomesK
+💳 Contas (Accounts)
+
+    Abertura de contas (Corrente ou Poupança).
+
+    Herança de Agência: A conta é vinculada automaticamente à agência do cliente titular.
+
+    Verificação de duplicidade: Impede que o mesmo cliente tenha duas contas do mesmo tipo.
+
+🔐 Autenticação & Segurança
+
+    Rota de Login (/auth/login).
+
+    Verificação de credenciais (CPF/CNPJ + Senha) comparando com o hash no banco.
+
+    Tratamento Global de Erros: Sistema centralizado para capturar exceções de negócio (ex: ClientDoesntExistException) e retornar JSONs de erro amigáveis (HTTP 400, 404, 409).
+
+📂 Estrutura do Projeto
+
+O projeto segue uma arquitetura limpa e modular:
+Plaintext
+
+banco_system/
+├── config/             # Configurações de Banco de Dados e Dependências
+├── models/             # Classes SQLAlchemy (Tabelas do Banco)
+├── schemas/            # Classes Pydantic (Validação de Entrada/Saída)
+├── routes/             # Endpoints da API (Controllers)
+├── utils/              # Ferramentas auxiliares
+│   ├── exceptions/     # Exceções Personalizadas e Handlers
+│   ├── verifications/  # Lógica de validação (ex: Telefone)
+│   └── security.py     # Lógica de Hashing de Senha
+└── main.py             # Ponto de entrada da aplicação
+
+⚙️ Como Rodar o Projeto
+
+Pré-requisitos
+
+    Python 3.x instalado.
+
+    MySQL Server rodando.
+
+    Um banco de dados vazio criado (ex: banco_beto_db).
+
+Passo a Passo
+
+    Clone o repositório:
+    Bash
+
+git clone https://github.com/seu-usuario/banco-beto-api.git
+cd banco-beto-api
+
+Instale as dependências:
+Bash
+
+pip install fastapi uvicorn sqlalchemy pymysql pydantic passlib[bcrypt] cryptography
+
+Configure o Banco de Dados: Edite o arquivo config/database.py com suas credenciais do MySQL:
+Python
+
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://SEU_USUARIO:SUA_SENHA@localhost/banco_beto_db"
+
+Execute o Servidor:
+Bash
+
+    py -m uvicorn main:app --reload
+
+    
+
+        O FastAPI gera automaticamente uma interface interativa (Swagger UI) para você testar todas as rotas.
+
+👤 Autor
+
+Fernando Gomes
+
+    Desenvolvedor Backend em formação
+
+    Estudante de Análise e Desenvolvimento de Sistemas
