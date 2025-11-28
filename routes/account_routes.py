@@ -17,7 +17,7 @@ router = APIRouter(
 
 @router.post("/")
 def create_account(account: AccountCreate, db: Session = Depends(get_db)):
-    client = db.query(ClientModel).filter((ClientModel.client_id == account.client_id).first())
+    client = db.query(ClientModel).filter((ClientModel.client_id == account.client_id)).first()
     
     if not client:
         raise ClientDoesntExistException(account.client_id)

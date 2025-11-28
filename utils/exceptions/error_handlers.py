@@ -5,6 +5,8 @@ from utils.exceptions.client_exceptions import (ClientAlreadyExistsException, Cl
                                                 ClientDoesntHaveCPFException, BranchDoesntExistException)
 from utils.exceptions.auth_exceptions.InvalidCredentialsException import InvalidCredentialsException
 from utils.exceptions.Account_exceptions import ClientDoesntExistException, ClientAlreadyHasAccountException
+from utils.exceptions.general_exceptions import InvalidNumberException
+
 async def branch_exists_handler(request: Request, exc: BranchAlreadyExistsException):
     return JSONResponse(
         status_code=400,
@@ -77,4 +79,10 @@ async def client_already_has_account_handler(request: Request, exc: ClientAlread
             "erro": "Erro de Validação",
             "mensagem": exc.message,
             "id_tentado": exc.client_id},
+    )
+
+async def invalid_number_handler(request: Request, exc: InvalidNumberException):
+    return JSONResponse(
+        status_code=422,
+        content={"erro": "Formato Inválido", "mensagem": exc.message}
     )
