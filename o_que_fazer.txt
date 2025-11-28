@@ -1,0 +1,10 @@
+adicionar rota de login e senha para o cliente
+
+adicionar as verificações no Branch: telefone, endereço não precisa tanto
+adicionar as verificações em cliente: data de nascimento
+
+criar a rota e modelo de conta
+
+adicionar taxa e rendimento para conta
+
+adicionar extratos

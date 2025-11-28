@@ -1,17 +1,38 @@
-
-#testing the bank
-
-from core.Bank import Bank
-from core.Branch import Branch 
-from utils.exceptions import InvalidBranchInstanceError 
+# main.py
+from fastapi import FastAPI
+from config.database import engine, Base
 
 
-banco_beto = Bank("Banco Beto", "12.345.678/0001-99", "Rua das Flores, 123", "(11) 98765-4321")
+from routes import client_routes, branch_routes, account_routes, auth_routes
 
 
-filial_centro = Branch("001", "Av. Principal, 500", "(11) 3333-4444", banco_beto)
+from utils.exceptions.BranchExceptions import BranchAlreadyExistsException
+from utils.exceptions.error_handlers import branch_exists_handler
+from utils.exceptions.client_exceptions import (ClientAlreadyExistsException, ClientDoesntHaveCNPJException,
+                                                ClientDoesntHaveCPFException, BranchDoesntExistException)
+from utils.exceptions.error_handlers import (client_exists_handler, client_missing_cnpj_handler, 
+                                             client_missing_cpf_handler, branch_doesnt_exist_handler)
+from utils.exceptions.auth_exceptions.InvalidCredentialsException import InvalidCredentialsException
+from utils.exceptions.error_handlers import invalid_credentials_handler
 
+# 1. Cria as tabelas no banco de dados automaticamente
+Base.metadata.create_all(bind=engine)
 
-banco_beto.add_branch(filial_centro)
-print(f"Banco: {banco_beto._name}")
-print(f"Filiais adicionadas: {[b.branch_id for b in banco_beto.show_branches()]}")
+app = FastAPI()
+
+app.add_exception_handler(BranchAlreadyExistsException, branch_exists_handler)
+app.add_exception_handler(ClientAlreadyExistsException, client_exists_handler)
+app.add_exception_handler(ClientDoesntHaveCNPJException, client_missing_cnpj_handler)
+app.add_exception_handler(ClientDoesntHaveCPFException, client_missing_cpf_handler)
+app.add_exception_handler(BranchDoesntExistException, branch_doesnt_exist_handler)
+app.add_exception_handler(InvalidCredentialsException, invalid_credentials_handler)
+
+@app.get("/")
+def read_root():
+    return {"mensagem": "O Banco Beto está ON! Acesse /docs para usar."}
+
+# 2. Inclui as rotas do branch_routes
+app.include_router(branch_routes.router)
+app.include_router(client_routes.router)
+app.include_router(account_routes.router)
+app.include_router(auth_routes.router)
